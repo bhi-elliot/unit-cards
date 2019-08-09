@@ -30,6 +30,7 @@ import {
   unitSizes,
 } from './fixtures/units';
 import { fortSize } from './fixtures/unitStats';
+import { gettext } from './i18n';
 
 export interface State {
   name: string;
@@ -60,7 +61,7 @@ export interface State {
 
 class App extends Component<{}, State> {
   state = {
-    name: 'Unit Name',
+    name: gettext('Unit Name'),
     commander: '',
     border: '',
     ancestry: 'Human' as UnitAncestry,
@@ -275,7 +276,7 @@ class App extends Component<{}, State> {
     return (
       <div className="container text-center">
         <h1>
-          <small>Strongholds & Followers</small>
+          <small>Strongholds &amp; Followers</small>
           <br />
           Unit Card Creator
         </h1>

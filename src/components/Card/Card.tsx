@@ -8,6 +8,7 @@ import { traitData, TraitData, CustomTrait } from '../../fixtures/traits';
 import ne from './corner-ne.png';
 import se from './corner-se.png';
 import sw from './corner-sw.png';
+import { gettext } from '../../i18n';
 
 interface Props {
   unitData: UnitData;
@@ -18,7 +19,7 @@ const Trait = ({ trait }: { trait: TraitData | CustomTrait | undefined }) => (
   <div>
     {trait ? (
       <>
-        <b>{trait.name}</b>. {trait.description}
+        <b>{gettext(trait.name)}</b>. {gettext(trait.description)}
       </>
     ) : null}
   </div>
@@ -40,16 +41,16 @@ const Fortification = ({
   type: FortType;
   level: FortLevel;
 }) => (
-  <Trait
-    trait={{
-      name: 'Fortification',
-      description: `Units defending this structure gain +${
-        fortMorale[type][level]
-      } Morale.`,
-      cost: 0,
-    }}
-  />
-);
+    <Trait
+      trait={{
+        name: 'Fortification',
+        description: `Units defending this structure gain +${
+          fortMorale[type][level]
+          } Morale.`,
+        cost: 0,
+      }}
+    />
+  );
 
 export class Card extends Component<Props> {
   render() {
@@ -95,7 +96,7 @@ export class Card extends Component<Props> {
           <div
             className={`card-top ${
               type === 'Fortification' ? 'card-top-fort' : ''
-            }`}
+              }`}
           >
             <div className="card-name">{name}</div>
             {type === 'Levies' ? (
@@ -103,29 +104,29 @@ export class Card extends Component<Props> {
                 {ancestryOverride
                   ? ancestryOverride
                   : ancestry === 'None'
-                  ? ''
-                  : ancestry}{' '}
+                    ? ''
+                    : ancestry}{' '}
                 {type}
               </div>
             ) : type === 'Fortification' ? (
               <div className="card-type">{`${
                 fortType !== 'None' ? `${fortLevel} level ` : ''
-              }${type}${fortType !== 'None' ? ` (${fortType})` : ''}`}</div>
+                }${type}${fortType !== 'None' ? ` (${fortType})` : ''}`}</div>
             ) : (
-              <div className="card-type">
-                {ancestryOverride
-                  ? ancestryOverride
-                  : ancestry === 'None'
-                  ? ''
-                  : ancestry}{' '}
-                {experience}
-                <br />
-                {equipment} {type}
-              </div>
-            )}
+                  <div className="card-type">
+                    {ancestryOverride
+                      ? ancestryOverride
+                      : ancestry === 'None'
+                        ? ''
+                        : gettext(ancestry)}{' '}
+                    {gettext(experience)}
+                    <br />
+                    {gettext(equipment)} {gettext(type)}
+                  </div>
+                )}
           </div>
           <div className="card-main">
-            <div className="card-cost">Cost: {cost ? cost : '-'}</div>
+            <div className="card-cost">{gettext("Cost:")} {cost ? cost : '-'}</div>
             <CardTable
               size={size}
               attack={attack}
@@ -137,39 +138,39 @@ export class Card extends Component<Props> {
             />
             {(ancestryStats[ancestry].traits.length &&
               type !== 'Fortification') ||
-            (type == 'Fortification' && fortType !== 'None') ||
-            selectedTraits.length ||
-            type === 'Cavalry' ||
-            type === 'Siege Engine' ||
-            type === 'Levies' ? (
-              <>
-                <div className="card-traits">Traits</div>
+              (type == 'Fortification' && fortType !== 'None') ||
+              selectedTraits.length ||
+              type === 'Cavalry' ||
+              type === 'Siege Engine' ||
+              type === 'Levies' ? (
+                <>
+                  <div className="card-traits">{gettext("Traits")}</div>
 
-                {type === 'Fortification'
-                  ? null
-                  : ancestryStats[ancestry].traits.map((trait) => (
+                  {type === 'Fortification'
+                    ? null
+                    : ancestryStats[ancestry].traits.map((trait) => (
                       <Trait
                         trait={traitData.find((t) => t.name === trait)}
                         key={`ancestry-${trait}`}
                       />
                     ))}
-                {selectedTraits.map((trait) => (
-                  <div key={`parent-${trait}`}>
-                    {traitData.find((t) => t.name === trait.value) ? (
-                      <Trait
-                        trait={traitData.find((t) => t.name === trait.value)}
-                      />
-                    ) : (
-                      <Trait
-                        trait={this.props.savedTraits.find(
-                          (t) => t.name === trait.value,
+                  {selectedTraits.map((trait) => (
+                    <div key={`parent-${trait}`}>
+                      {traitData.find((t) => t.name === trait.value) ? (
+                        <Trait
+                          trait={traitData.find((t) => t.name === trait.value)}
+                        />
+                      ) : (
+                          <Trait
+                            trait={this.props.savedTraits.find(
+                              (t) => t.name === trait.value,
+                            )}
+                          />
                         )}
-                      />
-                    )}
-                  </div>
-                ))}
-              </>
-            ) : null}
+                    </div>
+                  ))}
+                </>
+              ) : null}
             {type === 'Cavalry' && <Charge />}
             {type === 'Levies' && <AlwaysDiminished />}
             {type === 'Siege Engine' && <SiegeEngine />}
