@@ -5,6 +5,7 @@ var word4word: { [s: string]: string; } = {
     "Toughness:": "Endurance :",
     "Morale:": "Morale :",
     "Size:": "Effectif :",
+    "Commanded by": "Commandé par",
 
     'None': "Aucun",
     'Bugbear': "Gobelours",

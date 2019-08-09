@@ -178,7 +178,7 @@ export class Card extends Component<Props> {
               <Fortification type={fortType} level={fortLevel} />
             )}
             {commander ? (
-              <div className="commander">Commanded by {commander}</div>
+              <div className="commander">{gettext("Commanded by")} {commander}</div>
             ) : null}
           </div>
         </div>
